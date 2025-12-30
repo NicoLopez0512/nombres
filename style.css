@@ -1,7 +1,18 @@
 document.addEventListener("DOMContentLoaded", cargarHistorial);
 
-let fechaTemporal = "";
-let nombreTemporal = "";
+let cursoTemp = "";
+let fechaTemp = "";
+let nombreTemp = "";
+
+function guardarCurso() {
+    const curso = document.getElementById("cursoInput").value.trim();
+    if (curso === "") {
+        alert("Ingresa un curso");
+        return;
+    }
+    cursoTemp = curso;
+    alert("Curso guardado correctamente");
+}
 
 function guardarFecha() {
     const fecha = document.getElementById("fechaInput").value;
@@ -9,7 +20,7 @@ function guardarFecha() {
         alert("Selecciona una fecha");
         return;
     }
-    fechaTemporal = fecha;
+    fechaTemp = fecha;
     alert("Fecha guardada correctamente");
 }
 
@@ -19,27 +30,28 @@ function guardarNombre() {
         alert("Ingresa un nombre");
         return;
     }
-    nombreTemporal = nombre;
+    nombreTemp = nombre;
     document.getElementById("nombreInput").value = "";
     alert("Nombre guardado correctamente");
 }
 
 function agregarRegistro() {
-    if (fechaTemporal === "" || nombreTemporal === "") {
-        alert("Debes guardar una fecha y un nombre antes");
+    if (cursoTemp === "" || fechaTemp === "" || nombreTemp === "") {
+        alert("Debes guardar curso, fecha y nombre antes");
         return;
     }
 
     let historial = JSON.parse(localStorage.getItem("historial")) || [];
 
     historial.push({
-        fecha: fechaTemporal,
-        nombre: nombreTemporal
+        curso: cursoTemp,
+        fecha: fechaTemp,
+        nombre: nombreTemp
     });
 
     localStorage.setItem("historial", JSON.stringify(historial));
 
-    nombreTemporal = "";
+    nombreTemp = "";
     mostrarHistorial();
 }
 
@@ -56,14 +68,12 @@ function mostrarHistorial() {
     historial.forEach(registro => {
         const fila = document.createElement("tr");
 
-        const tdFecha = document.createElement("td");
-        tdFecha.textContent = registro.fecha;
+        fila.innerHTML = `
+            <td>${registro.curso}</td>
+            <td>${registro.fecha}</td>
+            <td>${registro.nombre}</td>
+        `;
 
-        const tdNombre = document.createElement("td");
-        tdNombre.textContent = registro.nombre;
-
-        fila.appendChild(tdFecha);
-        fila.appendChild(tdNombre);
         tabla.appendChild(fila);
     });
 }
@@ -78,13 +88,14 @@ function exportarExcel() {
 
     let datos = historial.map((r, index) => ({
         "N°": index + 1,
+        "Curso": r.curso,
         "Fecha": r.fecha,
         "Nombre": r.nombre
     }));
 
     let hoja = XLSX.utils.json_to_sheet(datos);
     let libro = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(libro, hoja, "Historial");
+    XLSX.utils.book_append_sheet(libro, hoja, "Informe");
 
-    XLSX.writeFile(libro, "informe_historial.xlsx");
+    XLSX.writeFile(libro, "informe_registro_curso.xlsx");
 }
