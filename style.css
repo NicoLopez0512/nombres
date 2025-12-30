@@ -1,61 +1,26 @@
-document.addEventListener("DOMContentLoaded", cargarHistorial);
-
-let cursoTemp = "";
-let fechaTemp = "";
-let nombreTemp = "";
-
-function guardarCurso() {
-    const curso = document.getElementById("cursoInput").value.trim();
-    if (curso === "") {
-        alert("Ingresa un curso");
-        return;
-    }
-    cursoTemp = curso;
-    alert("Curso guardado correctamente");
-}
-
-function guardarFecha() {
-    const fecha = document.getElementById("fechaInput").value;
-    if (fecha === "") {
-        alert("Selecciona una fecha");
-        return;
-    }
-    fechaTemp = fecha;
-    alert("Fecha guardada correctamente");
-}
-
-function guardarNombre() {
-    const nombre = document.getElementById("nombreInput").value.trim();
-    if (nombre === "") {
-        alert("Ingresa un nombre");
-        return;
-    }
-    nombreTemp = nombre;
-    document.getElementById("nombreInput").value = "";
-    alert("Nombre guardado correctamente");
-}
+document.addEventListener("DOMContentLoaded", mostrarHistorial);
 
 function agregarRegistro() {
-    if (cursoTemp === "" || fechaTemp === "" || nombreTemp === "") {
-        alert("Debes guardar curso, fecha y nombre antes");
+    const curso = document.getElementById("cursoInput").value.trim();
+    const fecha = document.getElementById("fechaInput").value;
+    const nombre = document.getElementById("nombreInput").value.trim();
+
+    if (curso === "" || fecha === "" || nombre === "") {
+        alert("Debes completar curso, fecha y nombre");
         return;
     }
 
     let historial = JSON.parse(localStorage.getItem("historial")) || [];
 
     historial.push({
-        curso: cursoTemp,
-        fecha: fechaTemp,
-        nombre: nombreTemp
+        curso: curso,
+        fecha: fecha,
+        nombre: nombre
     });
 
     localStorage.setItem("historial", JSON.stringify(historial));
 
-    nombreTemp = "";
-    mostrarHistorial();
-}
-
-function cargarHistorial() {
+    document.getElementById("nombreInput").value = "";
     mostrarHistorial();
 }
 
