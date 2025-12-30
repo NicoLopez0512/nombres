@@ -7,23 +7,30 @@
 </head>
 <body>
 
-    <h1>Registro de Personas</h1>
+    <h1>Registro de Curso</h1>
 
     <div class="formulario">
+        <input type="text" id="cursoInput" placeholder="Curso (ej: 3° Medio A)">
+        <button onclick="guardarCurso()">Guardar Curso</button>
+
         <input type="date" id="fechaInput">
         <button onclick="guardarFecha()">Guardar Fecha</button>
 
         <input type="text" id="nombreInput" placeholder="Nombre de la persona">
         <button onclick="guardarNombre()">Guardar Nombre</button>
 
+        <br><br>
+
         <button onclick="agregarRegistro()">Agregar al historial</button>
         <button onclick="exportarExcel()">Generar informe (Excel)</button>
     </div>
 
     <h2>Historial</h2>
+
     <table>
         <thead>
             <tr>
+                <th>Curso</th>
                 <th>Fecha</th>
                 <th>Nombre</th>
             </tr>
