@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Personas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Registro de Personas</h1>
+
+    <div class="formulario">
+        <input type="date" id="fechaInput">
+        <input type="text" id="nombreInput" placeholder="Nombre de la persona">
+        <button onclick="agregarRegistro()">Agregar</button>
+        <button onclick="exportarExcel()">Exportar a Excel</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Nombre</th>
+            </tr>
+        </thead>
+        <tbody id="tablaRegistros"></tbody>
+    </table>
+
+    <!-- Librería para exportar a Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
