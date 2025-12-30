@@ -1,69 +1,45 @@
-document.addEventListener("DOMContentLoaded", cargarRegistros);
-
-function agregarRegistro() {
-    const fecha = document.getElementById("fechaInput").value;
-    const nombre = document.getElementById("nombreInput").value.trim();
-
-    if (fecha === "" || nombre === "") {
-        alert("Debes ingresar fecha y nombre");
-        return;
-    }
-
-    let registros = JSON.parse(localStorage.getItem("registros")) || [];
-
-    registros.push({
-        fecha: fecha,
-        nombre: nombre
-    });
-
-    localStorage.setItem("registros", JSON.stringify(registros));
-
-    document.getElementById("nombreInput").value = "";
-    mostrarRegistros();
+body {
+    background-color: #0a3d62;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    color: white;
+    padding: 30px;
 }
 
-function cargarRegistros() {
-    mostrarRegistros();
+.formulario {
+    margin-bottom: 25px;
 }
 
-function mostrarRegistros() {
-    const tabla = document.getElementById("tablaRegistros");
-    tabla.innerHTML = "";
-
-    let registros = JSON.parse(localStorage.getItem("registros")) || [];
-
-    registros.forEach(registro => {
-        const fila = document.createElement("tr");
-
-        const tdFecha = document.createElement("td");
-        tdFecha.textContent = registro.fecha;
-
-        const tdNombre = document.createElement("td");
-        tdNombre.textContent = registro.nombre;
-
-        fila.appendChild(tdFecha);
-        fila.appendChild(tdNombre);
-        tabla.appendChild(fila);
-    });
+input {
+    padding: 8px;
+    margin: 5px;
+    font-size: 16px;
 }
 
-function exportarExcel() {
-    let registros = JSON.parse(localStorage.getItem("registros")) || [];
+button {
+    background-color: #c0392b;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    margin: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
 
-    if (registros.length === 0) {
-        alert("No hay datos para exportar");
-        return;
-    }
+button:hover {
+    background-color: #e74c3c;
+}
 
-    let datos = registros.map((r, index) => ({
-        "N°": index + 1,
-        "Fecha": r.fecha,
-        "Nombre": r.nombre
-    }));
+table {
+    margin: 0 auto;
+    border-collapse: collapse;
+    width: 80%;
+    background-color: white;
+    color: black;
+}
 
-    let hoja = XLSX.utils.json_to_sheet(datos);
-    let libro = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(libro, hoja, "Registros");
-
-    XLSX.writeFile(libro, "registro_personas.xlsx");
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
 }
