@@ -2,26 +2,21 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Registro e Informe</title>
+    <title>Registro de Curso</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>Registro de Curso</h1>
+    <h1>Registro de Personas</h1>
 
     <div class="formulario">
         <input type="text" id="cursoInput" placeholder="Curso (ej: 3° Medio A)">
-        <button onclick="guardarCurso()">Guardar Curso</button>
-
         <input type="date" id="fechaInput">
-        <button onclick="guardarFecha()">Guardar Fecha</button>
-
         <input type="text" id="nombreInput" placeholder="Nombre de la persona">
-        <button onclick="guardarNombre()">Guardar Nombre</button>
 
         <br><br>
 
-        <button onclick="agregarRegistro()">Agregar al historial</button>
+        <button onclick="agregarRegistro()">Agregar registro</button>
         <button onclick="exportarExcel()">Generar informe (Excel)</button>
     </div>
 
@@ -38,6 +33,7 @@
         <tbody id="tablaRegistros"></tbody>
     </table>
 
+    <!-- Librería Excel -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
     <script src="script.js"></script>
 </body>
