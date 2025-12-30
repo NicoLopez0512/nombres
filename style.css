@@ -1,45 +1,90 @@
-body {
-    background-color: #0a3d62; /* azul */
-    font-family: Arial, sans-serif;
-    text-align: center;
-    color: white;
-    padding: 30px;
+document.addEventListener("DOMContentLoaded", cargarHistorial);
+
+let fechaTemporal = "";
+let nombreTemporal = "";
+
+function guardarFecha() {
+    const fecha = document.getElementById("fechaInput").value;
+    if (fecha === "") {
+        alert("Selecciona una fecha");
+        return;
+    }
+    fechaTemporal = fecha;
+    alert("Fecha guardada correctamente");
 }
 
-h1 {
-    margin-bottom: 20px;
+function guardarNombre() {
+    const nombre = document.getElementById("nombreInput").value.trim();
+    if (nombre === "") {
+        alert("Ingresa un nombre");
+        return;
+    }
+    nombreTemporal = nombre;
+    document.getElementById("nombreInput").value = "";
+    alert("Nombre guardado correctamente");
 }
 
-.formulario input {
-    padding: 8px;
-    margin: 5px;
-    font-size: 16px;
+function agregarRegistro() {
+    if (fechaTemporal === "" || nombreTemporal === "") {
+        alert("Debes guardar una fecha y un nombre antes");
+        return;
+    }
+
+    let historial = JSON.parse(localStorage.getItem("historial")) || [];
+
+    historial.push({
+        fecha: fechaTemporal,
+        nombre: nombreTemporal
+    });
+
+    localStorage.setItem("historial", JSON.stringify(historial));
+
+    nombreTemporal = "";
+    mostrarHistorial();
 }
 
-button {
-    background-color: #c0392b; /* rojo */
-    color: white;
-    border: none;
-    padding: 10px 14px;
-    margin: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
+function cargarHistorial() {
+    mostrarHistorial();
 }
 
-button:hover {
-    background-color: #e74c3c;
+function mostrarHistorial() {
+    const tabla = document.getElementById("tablaRegistros");
+    tabla.innerHTML = "";
+
+    let historial = JSON.parse(localStorage.getItem("historial")) || [];
+
+    historial.forEach(registro => {
+        const fila = document.createElement("tr");
+
+        const tdFecha = document.createElement("td");
+        tdFecha.textContent = registro.fecha;
+
+        const tdNombre = document.createElement("td");
+        tdNombre.textContent = registro.nombre;
+
+        fila.appendChild(tdFecha);
+        fila.appendChild(tdNombre);
+        tabla.appendChild(fila);
+    });
 }
 
-table {
-    margin: 30px auto;
-    border-collapse: collapse;
-    width: 80%;
-    background-color: white;
-    color: black;
-}
+function exportarExcel() {
+    let historial = JSON.parse(localStorage.getItem("historial")) || [];
 
-th, td {
-    border: 1px solid #ccc;
-    padding: 10px;
+    if (historial.length === 0) {
+        alert("No hay registros para generar el informe");
+        return;
+    }
+
+    let datos = historial.map((r, index) => ({
+        "N°": index + 1,
+        "Fecha": r.fecha,
+        "Nombre": r.nombre
+    }));
+
+    let hoja = XLSX.utils.json_to_sheet(datos);
+    let libro = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(libro, hoja, "Historial");
+
+    XLSX.writeFile(libro, "informe_historial.xlsx");
 }
