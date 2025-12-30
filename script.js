@@ -34,7 +34,7 @@ button:hover {
 table {
     margin: 0 auto;
     border-collapse: collapse;
-    width: 80%;
+    width: 90%;
     background-color: white;
     color: black;
 }
